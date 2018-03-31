@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jit.dcg.mapper.FileDtoMapper">
+  <resultMap id="BaseResultMap" type="org.jit.dcg.dto.FileDto">
+    <id column="fileNewName" jdbcType="VARCHAR" property="filenewname" />
+    <result column="fileOwner" jdbcType="VARCHAR" property="fileowner" />
+    <result column="fileUrl" jdbcType="VARCHAR" property="fileurl" />
+    <result column="filetime" jdbcType="VARCHAR" property="filetime" />
+    <result column="fileOriginalName" jdbcType="VARCHAR" property="fileoriginalname" />
+    <result column="fileStatus" jdbcType="VARCHAR" property="filestatus" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    fileNewName, fileOwner, fileUrl, filetime, fileOriginalName, fileStatus
+  </sql>
+
+  <!--按文件名查找文件-->
+  <select id="selectByFileName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from file
+    where fileOriginalName = #{fileOriginalName,jdbcType=VARCHAR}
+          AND fileOwner = #{fileOwner,jdbcType=VARCHAR}
+    ORDER BY filetime DESC
+  </select>
+
+  <!--按用户名查找所有的文件-->
+  <select id="selectByPerson" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from file
+    where fileOwner = #{fileOwner,jdbcType=VARCHAR}
+  </select>
+
+  <!--按文件名删除文件-->
+  <update id="deleteByFileName" parameterType="java.lang.String">
+    update file set fileStatus = #{fileStatus,jdbcType=VARCHAR}
+    where fileOriginalName = #{fileOriginalName,jdbcType=VARCHAR}
+          AND fileOwner = #{fileOwner,jdbcType=VARCHAR}
+  </update>
+
+  <!--插入文件信息-->
+  <insert id="insert" parameterType="org.jit.dcg.dto.FileDto">
+    insert into file (fileNewName, fileOwner, fileUrl, 
+      filetime, fileOriginalName,fileStatus)
+    values (#{filenewname,jdbcType=VARCHAR}, #{fileowner,jdbcType=VARCHAR}, #{fileurl,jdbcType=VARCHAR}, 
+      #{filetime,jdbcType=VARCHAR}, #{fileoriginalname,jdbcType=VARCHAR},#{fileStatus,jdbcType=VARCHAR})
+  </insert>
+
+
+</mapper>

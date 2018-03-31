@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jit.dcg.mapper.UserDtoMapper">
+  <resultMap id="BaseResultMap" type="org.jit.dcg.dto.UserDto">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="pwd" jdbcType="VARCHAR" property="pwd" />
+    <result column="imagePath" jdbcType="VARCHAR" property="imagepath" />
+    <result column="roleId" jdbcType="CHAR" property="roleid" />
+    <result column="state" jdbcType="CHAR" property="state" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    ID, name, pwd, imagePath, roleId, state
+  </sql>
+
+    <!--插入用户-->
+  <insert id="insert" parameterType="org.jit.dcg.dto.UserDto">
+    insert into user (ID, name, pwd, 
+      imagePath, roleId, state)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{imagepath,jdbcType=VARCHAR}, #{roleid,jdbcType=CHAR}, #{state,jdbcType=CHAR})
+  </insert>
+
+
+    <!--更新用户信息-->
+  <update id="updateByPrimaryKey" parameterType="org.jit.dcg.dto.UserDto">
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      pwd = #{pwd,jdbcType=VARCHAR},
+      imagePath = #{imagepath,jdbcType=VARCHAR},
+      roleId = #{roleid,jdbcType=CHAR},
+      state = #{state,jdbcType=CHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+
+
+    <!--按照用户名查询-->
+  <select id="selectByUserName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where name = #{name,jdbcType=VARCHAR}
+  </select>
+</mapper>
