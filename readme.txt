@@ -1,2 +1,2 @@
-Git is a version control system.
-Git is free software.
+1.项目采用ssm框架搭建
+2.配置文件主要放在jdbc.properities文件中
