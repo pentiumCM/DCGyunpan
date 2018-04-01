@@ -5,6 +5,7 @@
 <head>
     <title>DCG CLOUD</title>
 </head>
+
 <style>
     .container{
         width:800px;
@@ -27,9 +28,6 @@
 
     </div>
     Copyright DCG
-
-
-
 
 </div>
 
