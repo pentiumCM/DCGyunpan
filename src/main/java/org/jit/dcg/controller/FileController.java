@@ -30,6 +30,13 @@ public class FileController {
     @Resource
     FileService fileService;
 
+    /**
+     * 上传文件，支持多文件上传
+     * @param file CommonsMultipartFile文件类
+     * @param request  username
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/fileUpload_android.do", method = RequestMethod.POST)
     @ResponseBody
     public JSONObject revise1(@RequestParam("file") CommonsMultipartFile file[], HttpServletRequest request)
@@ -61,20 +68,28 @@ public class FileController {
 
 
     /**
-     * 按用户名和文件名进行查找文件，若有多个同名文件，则取最新上传的文件
+     * 按用户名和文件新名进行下载文件
      * @param response
-     * @param resquest
+     * @param request username/fileNewName
      * @return
      * @throws IOException
      */
     @ResponseBody
     @RequestMapping(value = "/fileDownLoad_android.do")
-    public JSONObject fileDownLoad(HttpServletResponse response, HttpServletRequest resquest) throws IOException {
+    public JSONObject fileDownLoad(HttpServletResponse response, HttpServletRequest request) throws IOException {
         JSONObject downJson = new JSONObject();
-        String username = resquest.getParameter("username");
-        String fileOriginalName = resquest.getParameter("fileOriginalName");
-        List<FileDto> fileDtoList = fileService.selectByFileName(fileOriginalName,username);
-        if (fileDtoList.size() > 0){
+        String username = request.getParameter("username");
+        String fileNewName = request.getParameter("fileNewName");
+        //List<FileDto> fileDtoList = fileService.selectByFileName(fileOriginalName,username);
+        FileDto fileDto = fileService.selectByFileNewName(fileNewName,username,"A");
+        if (fileDto != null){
+            FileUtil fileUtil = new FileUtil();
+            downJson = fileUtil.fileDownLoad(fileNewName,response);
+            downJson.put("fileInfo",fileDto);
+        }else {
+            downJson.put("downResult","文件不存在");
+        }
+  /*      if (fileDtoList.size() > 0){
             FileDto fileDto = fileDtoList.get(0);
             String fileNewName = fileDto.getFilenewname();
             FileUtil fileUtil = new FileUtil();
@@ -82,11 +97,50 @@ public class FileController {
             downJson.put("fileInfo",fileDto);
         }else {
             downJson.put("downResult","文件不存在");
-        }
+        }*/
         return downJson;
     }
 
 
+    /**
+     * 查询用户文件列表
+     * @param request username/
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryFileByPerson_android.do",method = RequestMethod.POST)
+    public JSONObject queryFileByPerson(HttpServletRequest request){
+        JSONObject fileJson = new JSONObject();
+        String username = request.getParameter("username");
+        List<FileDto> fileList = fileService.fileLitByPeron(username,"A");
+        if (fileList.size() > 0){
+            fileJson.put("fileList",fileList);
 
+        } else {
+            fileJson.put("fileList","文件列表为空。");
+        }
+        return fileJson;
+    }
+
+
+    /**
+     * 文件删除：根据用户名和Ta传过来的文件新名称匹配，将文件的状态改为“X”
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/deleteFileByName_android.do",method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject deleteFileByName(HttpServletRequest request){
+        JSONObject delJson = new JSONObject();
+        String username = request.getParameter("username");             //获取用户名
+        String fileNewName = request.getParameter("fileNewName");       //获取需要删除的文件的新名称
+        boolean delete = fileService.deleteFileByName(fileNewName,username,"X");
+        if (delete){
+            delJson.put("deleteResult","文件删除成功");
+        }else {
+            delJson.put("deleteResult","文件删除失败");
+        }
+        return delJson;
+    }
 
 }

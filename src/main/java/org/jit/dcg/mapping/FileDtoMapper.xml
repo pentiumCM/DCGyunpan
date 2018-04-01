@@ -10,32 +10,47 @@
     <result column="fileStatus" jdbcType="VARCHAR" property="filestatus" />
   </resultMap>
 
+
   <sql id="Base_Column_List">
     fileNewName, fileOwner, fileUrl, filetime, fileOriginalName, fileStatus
   </sql>
 
-  <!--按文件名查找文件-->
-  <select id="selectByFileName" parameterType="java.lang.String" resultMap="BaseResultMap">
+
+  <!--按用户名和文件原名查找状态为（“X”）存在的文件-->
+  <select id="selectByFileOriginalName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+      from file
+      where fileOriginalName = #{fileoriginalname,jdbcType=VARCHAR}
+        AND fileOwner = #{fileOwner,jdbcType=VARCHAR}
+        AND fileStatus = #{fileStatus,jdbcType=VARCHAR}
+          ORDER BY filetime DESC
+  </select>
+
+  <!--按用户名和文件在服务器上的新名查找状态为存在的文件-->
+  <select id="selectByFileNewName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from file
-    where fileOriginalName = #{fileOriginalName,jdbcType=VARCHAR}
+    where fileNewName = #{fileNewName,jdbcType=VARCHAR}
           AND fileOwner = #{fileOwner,jdbcType=VARCHAR}
+            AND fileStatus = #{fileStatus,jdbcType=VARCHAR}
     ORDER BY filetime DESC
   </select>
 
-  <!--按用户名查找所有的文件-->
+  <!--按用户名查找所有状态为"A"(代表存在)的文件-->
   <select id="selectByPerson" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from file
     where fileOwner = #{fileOwner,jdbcType=VARCHAR}
+          AND fileStatus = #{fileStatus,jdbcType=VARCHAR}
   </select>
 
-  <!--按文件名删除文件-->
+  <!--按文件在服务器上新名称删除文件,将文件状态修改为：X-->
   <update id="deleteByFileName" parameterType="java.lang.String">
     update file set fileStatus = #{fileStatus,jdbcType=VARCHAR}
-    where fileOriginalName = #{fileOriginalName,jdbcType=VARCHAR}
+    where fileNewName = #{fileNewName,jdbcType=VARCHAR}
           AND fileOwner = #{fileOwner,jdbcType=VARCHAR}
   </update>
 
