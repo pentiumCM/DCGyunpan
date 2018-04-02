@@ -4,12 +4,14 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jQuery-2.1.4.min.js"></script>
     <title>DCG CLOUD</title>
 </head>
 
 <style>
     .container{
-        width:800px;
+        width:50rem;
         margin:7% auto;
     }
 </style>
@@ -21,10 +23,10 @@
 
 <div class="container">
     <div style="width:60%;display:inline-block;">
-        <img src="../image/111.jpg" style="height:500px">
+        <img src="${pageContext.request.contextPath}/image/111.jpg" style="height:31.25rem">
     </div>
-    <div style="text-align:left;display:inline-block;height:505px;vertical-align:top;
-    padding:60px 0 0 20px;font-size: 24px;">
+    <div style="text-align:left;display:inline-block;height:31.5rem;vertical-align:top;
+    padding:3.75rem 0 0 1.25rem;font-size: 1.5rem;">
         <p>你</p>
         <p>一会儿看我</p>
         <p>一会儿看云
