@@ -2,6 +2,7 @@
          pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
     <title>DCG CLOUD</title>
 </head>
@@ -13,9 +14,14 @@
     }
 </style>
 <body>
+
+<%--右侧的二维码扫描下载功能--%>
+<jsp:include page="android-right.jsp"/>
+
+
 <div class="container">
     <div style="width:60%;display:inline-block;">
-        <img src="image/111.jpg" style="height:500px">
+        <img src="../image/111.jpg" style="height:500px">
     </div>
     <div style="text-align:left;display:inline-block;height:505px;vertical-align:top;
     padding:60px 0 0 20px;font-size: 24px;">

@@ -1,0 +1,32 @@
+@CHARSET "UTF-8";
+#rightLine {
+	right: 0px;
+    bottom: 120px;
+    height: 130px;
+    position: fixed;
+    z-index: 5555;
+    width: 30px;
+    /* height: 30px; */
+}
+#rightLine .p-first-word{
+	background-color: rgba(000, 000, 000, 0.1);
+}
+#rightBar {
+    display: none;
+    right: 0px;
+    bottom: 120px;
+    height: 130px;
+    position: fixed;
+    background-color: rgba(000, 000, 000, 0.3);
+    width: 100px;
+}
+#rightBar .android-div {
+	height: 100px;  
+	width:80px;
+	margin-top:20px;
+	margin-left: 10px;
+	cursor: pointer;
+}
+#rightBar p {
+	font-family: 微软雅黑;font-size: 14px;color:#eee;
+}

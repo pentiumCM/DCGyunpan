@@ -107,6 +107,6 @@
 
   <!-- 配置默认首页 -->
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>jsp/index.jsp</welcome-file>
   </welcome-file-list>
 </web-app>
