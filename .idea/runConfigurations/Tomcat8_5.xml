@@ -1,10 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Tomcat8.5" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.27" ALTERNATIVE_JRE_ENABLED="false">
     <option name="OPEN_IN_BROWSER" value="false" />
-    <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/yunpan/" />
     <option name="UPDATING_POLICY" value="restart-server" />
     <deployment>
-      <artifact name="yunpan:war">
+      <artifact name="yunpan:war exploded">
         <settings>
           <option name="CONTEXT_PATH" value="/yunpan" />
         </settings>
@@ -69,7 +68,7 @@
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true">
-        <artifact name="yunpan:war" />
+        <artifact name="yunpan:war exploded" />
       </option>
     </method>
   </configuration>
