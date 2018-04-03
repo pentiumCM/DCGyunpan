@@ -1,5 +1,6 @@
 package org.jit.dcg.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.jit.dcg.dto.UserDto;
 
 public interface UserDtoMapper {
@@ -13,6 +14,8 @@ public interface UserDtoMapper {
     int updateByPrimaryKey(UserDto record);
 
     public boolean register(UserDto user);
+
+    public int updateHeadImg(@Param("name")String username, @Param("imagepath") String head);
 
 
 }

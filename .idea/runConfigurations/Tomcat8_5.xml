@@ -68,6 +68,7 @@
     </ConfigurationWrapper>
     <method>
       <option name="BuildArtifacts" enabled="true">
+        <artifact name="yunpan:war" />
         <artifact name="yunpan:war exploded" />
       </option>
     </method>

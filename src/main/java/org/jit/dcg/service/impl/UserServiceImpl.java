@@ -14,6 +14,12 @@ public class UserServiceImpl implements UserService {
     private UserDtoMapper userDtoMapper;
 
 
+    //查询用户信息
+    @Override
+    public UserDto selectUserInfo(String name) {
+        return userDtoMapper.selectByUserName(name);
+    }
+
     @Override
     public boolean searchrep(String name) {
         UserDto u = userDtoMapper.selectByUserName(name);
@@ -43,5 +49,13 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public boolean updateHead(String username, String headImg) {
+        int n = userDtoMapper.updateHeadImg(username,headImg);
+        if (n > 0){
+            return true;
+        }
+        return false;
+    }
 
 }

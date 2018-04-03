@@ -31,7 +31,7 @@
       imagePath = #{imagepath,jdbcType=VARCHAR},
       roleId = #{roleid,jdbcType=CHAR},
       state = #{state,jdbcType=CHAR}
-    where ID = #{id,jdbcType=INTEGER}
+    where name = #{name,jdbcType=VARCHAR}
   </update>
 
 
@@ -42,4 +42,13 @@
     from user
     where name = #{name,jdbcType=VARCHAR}
   </select>
+
+  <!--修改用户头像-->
+  <update id="updateHeadImg" parameterType="java.lang.String">
+    update user
+    set imagePath = #{imagepath,jdbcType=VARCHAR}
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+
+
 </mapper>

@@ -1,11 +1,9 @@
 package org.jit.dcg.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.commons.io.FileUtils;
 import org.jit.dcg.dto.FileDto;
 import org.jit.dcg.service.FileService;
 import org.jit.dcg.util.FileUtil;
-import org.jit.dcg.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,13 +14,10 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 @Controller
 public class FileController {
@@ -41,8 +36,8 @@ public class FileController {
     @ResponseBody
     public JSONObject revise1(@RequestParam("file") CommonsMultipartFile file[], HttpServletRequest request)
             throws Exception {
-        String username = request.getParameter("username");
         JSONObject fileJson = new JSONObject();
+        String username = request.getParameter("username");
         //构造文件上传的帮助类，实现文件上传功能
         FileUtil fileUtil = new FileUtil();
         List<Map<String, Object>> fileList = new ArrayList<>();

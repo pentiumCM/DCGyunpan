@@ -1,23 +1,35 @@
 package org.jit.dcg.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import org.jit.dcg.dto.FileDto;
 import org.jit.dcg.dto.UserDto;
+import org.jit.dcg.service.FileService;
 import org.jit.dcg.service.UserService;
 import org.jit.dcg.util.CryptographyUtil;
+import org.jit.dcg.util.FileUtil;
+import org.jit.dcg.util.PropertiesUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 @Controller
 public class UserController {
 
     @Resource
     private UserService userService;
+    @Resource
+    private FileService fileService;
 
 
     // 获得用户登录请求，判断用户名以及密码是否符合要求
@@ -94,6 +106,66 @@ public class UserController {
         return regJson;
     }
 
+
+    /**
+     * 用户修改头像功能
+     * @param request
+     * @param file
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/updateHeadImage_android.do", method = RequestMethod.POST)
+    public JSONObject updataImage(HttpServletRequest request,@RequestParam("headImg") CommonsMultipartFile file[]){
+        JSONObject headImgJson = new JSONObject();
+        String username = request.getParameter("username");
+        //构造文件上传的帮助类，实现文件上传功能
+        FileUtil fileUtil = new FileUtil();
+        List<Map<String, Object>> fileList = new ArrayList<>();
+        fileList = fileUtil.fileUpLoad(file);
+        if ((boolean)fileList.get(fileList.size()-1).get("upFileFlag")) {  //文件上传成功的状态
+            List<FileDto> fileInfo = new ArrayList<>();
+            for (int i = 0; i < fileList.size()-1; i++) {                  //集合中最后一个内容是文件上传标志，不是文件本身信息，所以要减1
+                String headOriginalName = fileList.get(i).get("fileOriginalName").toString();
+                String headNewName = fileList.get(i).get("fileNewName").toString();
+                String headTime = fileList.get(i).get("fileTime").toString();
+                String headUrl = fileList.get(i).get("fileUrl").toString();
+                FileDto fileDto = new FileDto(headNewName, username, headUrl, headTime, headOriginalName,"H");
+                fileService.upFile(fileDto);
+                userService.updateHead(username,headNewName);
+                fileInfo.add(fileDto);
+            }
+            headImgJson.put("updateHeadResult","头像修改成功");
+            headImgJson.put("fileInfo",fileInfo.toString());
+        }else {                                                             //文件上传失败的状态
+            headImgJson.put("updateHeadResult","头像修改失败");
+        }
+        return headImgJson;
+    }
+
+    /**
+     * 下载用户头像功能
+     * @param request username 用户名
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/downHeadImg_android.do", method = RequestMethod.GET)
+    public JSONObject showHead(HttpServletRequest request,HttpServletResponse response){
+        JSONObject downJson = new JSONObject();
+        String username = request.getParameter("username");
+        UserDto userDto = userService.selectUserInfo(username);
+        String headName = userDto.getImagepath();
+        FileDto fileDto = fileService.selectByFileNewName(headName,username,"H");
+        if (fileDto != null){
+            FileUtil fileUtil = new FileUtil();
+            //进行下载头像
+            downJson = fileUtil.fileDownLoad(headName,response);
+            downJson.put("fileInfo",fileDto);
+        }else {
+            downJson.put("fileInfo","头像信息不存在");
+        }
+        return downJson;
+    }
 
 
 
