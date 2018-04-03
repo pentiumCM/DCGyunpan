@@ -51,4 +51,12 @@
   </update>
 
 
+  <!--用户更改密码-->
+  <update id="updatePwd" parameterType="java.lang.String">
+    update user
+    set pwd = #{pwd,jdbcType=VARCHAR}
+    where name = #{name,jdbcType=VARCHAR}
+  </update>
+
+
 </mapper>

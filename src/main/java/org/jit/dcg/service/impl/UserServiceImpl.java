@@ -58,4 +58,14 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    @Override
+    public boolean updatePwd(String username,String newpwd){
+        int n = userDtoMapper.updatePwd(username,newpwd);
+        if(n > 0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
 }

@@ -106,6 +106,33 @@ public class UserController {
         return regJson;
     }
 
+    /**
+     * 用户修改密码
+     * @param request username/oldpwd/newpwd
+     * @return
+     */
+    @RequestMapping(value = "/updatePwd_andriod.do", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONObject updataPwd(HttpServletRequest request){
+        JSONObject regJson = new JSONObject();
+        String username = request.getParameter("username");
+        String oldpwd =request.getParameter("oldpwd");
+        //将用户传过来的新密码加密
+        String newpwd = CryptographyUtil.md5(request.getParameter("newpwd"),"java1234");
+        String pwd = CryptographyUtil.md5(oldpwd, "java1234");
+        if(userService.login(username,pwd)){
+            if (userService.updatePwd(username,newpwd)) {
+                regJson.put("regResult", "修改成功");
+            }else {
+                regJson.put("regResult","修改失败");
+            }
+        }
+        else{
+            regJson.put("regResult", "密码错误");
+        }
+        return regJson;
+    }
+
 
     /**
      * 用户修改头像功能

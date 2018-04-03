@@ -14,4 +14,6 @@ public interface UserService {
     public boolean register(UserDto user);
 
     public boolean updateHead(String username,String headImg);
+
+    public boolean updatePwd(String username,String pwd);
 }
