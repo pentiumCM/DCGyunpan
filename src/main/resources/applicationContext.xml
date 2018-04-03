@@ -14,7 +14,6 @@
 		http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
 
 
-    <!--<context:component-scan base-package="org.jit.dcg"/>-->  <!--修改-->
     <!-- 加载外部的properties配置文件 -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
@@ -23,20 +22,26 @@
     <context:component-scan base-package="org.jit.dcg.service.impl" />
 
     <!-- 1. 数据源 : DriverManagerDataSource -->
-    <bean id="dataSource"
-          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+<!--    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="${jdbc.driver}" />
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}"/>
         <property name="password" value="${jdbc.password}" />
+    </bean>-->
+
+    <!-- 1. 数据源 : DRUID是阿里巴巴开源平台上一个数据库连接池实现 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}" />
+        <property name="initialSize" value="${jdbc.initialSize}"/>
+        <property name="maxActive" value="${jdbc.maxActive}"/>
+        <property name="maxIdle" value="${jdbc.maxIdle}"/>
+        <property name="minIdle" value="${jdbc.maxIdle}"/>
+        <property name="maxWait" value="${jdbc.maxWait}"/>
     </bean>
 
-
-    <!-- 2. mybatis的SqlSession的工厂 -->
- <!--   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-        <property name="dataSource" ref="dataSource"/>
-        <property name="mapperLocations" value="classpath*:mapping/*.xml"/>     &lt;!&ndash;修改&ndash;&gt;
-    </bean>-->
 
     <!-- 2. mybatis的SqlSession的工厂 -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
