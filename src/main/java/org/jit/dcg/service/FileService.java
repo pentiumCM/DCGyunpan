@@ -1,10 +1,14 @@
 package org.jit.dcg.service;
 
+import org.apache.ibatis.annotations.Param;
 import org.jit.dcg.dto.FileDto;
 
 import java.util.List;
 
 public interface FileService {
+
+    //查找某一用户所有状态的文件
+    List<FileDto> queryPersonAll(String fileNewName, String fileOwner);
 
     //查找某一用户的所有文件信息
     List<FileDto> fileLitByPeron(String username,String fileStatus);

@@ -16,6 +16,11 @@ public class FileServiceImpl implements FileService {
 
 
     @Override
+    public List<FileDto> queryPersonAll(String fileNewName, String fileOwner) {
+        return fileDtoMapper.queryPersonAll(fileNewName,fileOwner);
+    }
+
+    @Override
     public List<FileDto> fileLitByPeron(String username,String fileStatus) {
         return fileDtoMapper.selectByPerson(username,fileStatus);
     }

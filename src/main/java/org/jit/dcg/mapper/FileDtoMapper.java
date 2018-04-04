@@ -7,8 +7,11 @@ import java.util.List;
 
 public interface FileDtoMapper {
 
+    //查询某一用户的所有状态的文件
+    List<FileDto> queryPersonAll(@Param("fileNewName") String fileNewName,@Param("fileOwner") String fileOwner);
+
     //按文件名(原名)查找文件
-    List<FileDto> selectByFileOriginalName(@Param("fileOriginalName") String fileNewName,@Param("fileOwner") String fileOwner,@Param("fileStatus") String fileStatus);
+    List<FileDto> selectByFileOriginalName(@Param("fileOriginalName") String fileOriginalName,@Param("fileOwner") String fileOwner,@Param("fileStatus") String fileStatus);
 
     //按文件名(新名称)查找文件
     FileDto selectByFileNewName(@Param("fileNewName") String fileNewName,@Param("fileOwner") String fileOwner,@Param("fileStatus") String fileStatus);
@@ -21,5 +24,7 @@ public interface FileDtoMapper {
 
     // 插入文件信息
     int insert(FileDto fileDto);
+
+
 
 }

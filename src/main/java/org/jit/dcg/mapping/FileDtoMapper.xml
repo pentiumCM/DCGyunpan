@@ -15,6 +15,16 @@
     fileNewName, fileOwner, fileUrl, filetime, fileOriginalName, fileStatus
   </sql>
 
+<!--按用户名和文件新名称查找所有状态的的文件-->
+<select id="queryPersonAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from file
+    where fileNewName = #{fileNewName,jdbcType=VARCHAR}
+    AND fileOwner = #{fileOwner,jdbcType=VARCHAR}
+    ORDER BY filetime DESC
+</select>
+
 
   <!--按用户名和文件原名查找状态为（“X”）存在的文件-->
   <select id="selectByFileOriginalName" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -38,7 +48,7 @@
     ORDER BY filetime DESC
   </select>
 
-  <!--按用户名查找所有状态为"A"(代表存在)的文件-->
+  <!--按用户名查找所有"某种状态"为的文件-->
   <select id="selectByPerson" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

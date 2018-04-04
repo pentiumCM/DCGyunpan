@@ -110,7 +110,6 @@ public class FileController {
         List<FileDto> fileList = fileService.fileLitByPeron(username,"A");
         if (fileList.size() > 0){
             fileJson.put("fileList",fileList);
-
         } else {
             fileJson.put("fileList","文件列表为空。");
         }
@@ -120,7 +119,7 @@ public class FileController {
 
     /**
      * 文件删除：根据用户名和Ta传过来的文件新名称匹配，将文件的状态改为“X”
-     * @param request
+     * @param request username/fileNewName
      * @return
      */
     @RequestMapping(value = "/deleteFileByName_android.do",method = RequestMethod.POST)
@@ -138,4 +137,48 @@ public class FileController {
         return delJson;
     }
 
+
+    /**
+     * 查询用户回收站文件
+     * @param request username
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/fileRecycleBin_android.do",method = RequestMethod.POST)
+    public JSONObject fileRecycleBin(HttpServletRequest request){
+        JSONObject fileRecycleJson = new JSONObject();
+        String username = request.getParameter("username");
+        List<FileDto> fileList = fileService.fileLitByPeron(username,"X");
+        if (fileList.size() > 0){
+            fileRecycleJson.put("fileList",fileList);
+        }else {
+            fileRecycleJson.put("fileList","回收站文件列表为空!");
+        }
+        return fileRecycleJson;
+    }
+
+    /**
+     * 恢复用户回收站中的文件
+     * @param request username/fileNewName
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/fileRecover_android.do",method = RequestMethod.POST)
+    public JSONObject recoverFile(HttpServletRequest request){
+        JSONObject recoverJson = new JSONObject();
+        String username = request.getParameter("username");
+        String fileNewName = request.getParameter("fileNewName");
+        List<FileDto> fileAll = fileService.queryPersonAll(fileNewName,username);
+        if (fileAll.size() > 0){
+            boolean recover = fileService.deleteFileByName(fileNewName,username,"A");
+            if (recover){
+                recoverJson.put("recoverResult","文件恢复成功");
+            }else {
+                recoverJson.put("recoverResult","文件恢复失败");
+            }
+        }else {
+            recoverJson.put("recoverResult","需要恢复的文件不存在");
+        }
+        return recoverJson;
+    }
 }
